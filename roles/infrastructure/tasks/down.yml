@@ -1,0 +1,68 @@
+- name: Retrieve the details for 'sm.{{ project_name }}'
+  route53:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: get
+    zone: '{{ public_domain }}'
+    record: 'sm.{{ project_name }}'
+    type: A
+  register: rec
+
+- name: Delete the 'sm.{{ project_name }}' record
+  route53:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: absent
+    zone: '{{ public_domain }}'
+    record: "{{ rec.set.record }}"
+    ttl: "{{ rec.set.ttl }}"
+    type: "{{ rec.set.type }}"
+    value: "{{ rec.set.value }}"
+  when: rec.set.alias_hosted_zone_id is defined
+
+- name: Delete the EC2 Key
+  ec2_key:
+    name: '{{ key_name }}'
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    region: '{{ aws_region }}'
+    state: absent
+  register: ec2_key
+
+- name: Delete the Bastion Instance
+  cloudformation:
+    stack_name: '{{ bastion_stack_name }}'
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    state: absent
+    region: '{{ aws_region }}'
+    template: '{{ role_path }}/files/instance.yaml'
+    disable_rollback: true
+  register: instance
+
+- name: Delete the networking infraestructure
+  cloudformation:
+    stack_name: "{{ networking_stack_name }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: absent
+    region: "{{ aws_region }}"
+    template: '{{ role_path }}/files/networking.yaml'
+    disable_rollback: true
+    tags:
+      Name: "{{ networking_stack_name }}"
+      Project: "{{ project_name }}"
+  register: networking
+
+- name: Delete the EC2 Key
+  ec2_key:
+    name: '{{ key_name }}'
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    region: '{{ aws_region }}'
+    state: absent
+
+- name: Delete the outputs folder
+  file:
+    state: absent
+    path: '{{ output_folder }}'

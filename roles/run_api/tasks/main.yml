@@ -1,0 +1,37 @@
+- name: Copy template files
+  template:
+    src: '{{ item }}'
+    dest: '{{ docker_compose_dir }}/api/{{ item }}'
+    mode: 0600
+  loop:
+    - docker-compose.yml
+  register: compose_config
+
+- name: Build the production api image
+  docker_image:
+    build:
+      path: '{{ api_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile'
+    name: '{{ project_name }}/api'
+    source: build
+    push: no
+  when: env != 'dev'
+# This image is build for development
+- name: Build the development api image
+  docker_image:
+    build:
+      path: '{{ api_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile.dev'
+    name: '{{ project_name }}/api'
+    source: build
+    push: no
+  when: env == 'dev'
+
+- name: Start the containers
+  docker_compose:
+    project_src: '{{ docker_compose_dir }}/api'
+    restarted: '{{ compose_config is changed }}'
+    build: no
+    state: present

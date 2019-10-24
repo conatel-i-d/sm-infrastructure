@@ -1,0 +1,58 @@
+- name: Create an empty output folder
+  file:
+    state: directory
+    path: '{{ output_folder }}'
+
+- name: Networking infraestructure
+  cloudformation:
+    stack_name: "{{ networking_stack_name }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: present
+    region: "{{ aws_region }}"
+    template: '{{ role_path }}/files/networking.yaml'
+    disable_rollback: true
+    template_parameters:
+      KubernetesClusterName: '{{ project_name }}'
+    tags:
+      Name: "{{ networking_stack_name }}"
+      Project: "{{ project_name }}"
+  register: networking
+
+- name: EC2 Key
+  ec2_key:
+    name: '{{ key_name }}'
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    region: '{{ aws_region }}'
+    state: present
+  register: ec2_key
+
+- name: Create the Bastion Instance
+  cloudformation:
+    stack_name: '{{ bastion_stack_name }}'
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    state: present
+    region: '{{ aws_region }}'
+    template: '{{ role_path }}/files/instance.yaml'
+    disable_rollback: true
+    template_parameters:
+      InstanceName: '{{ bastion_instance_name }}'
+      SecurityGroup: '{{ networking.stack_outputs.SecurityGroupId }}'
+      KeyName: '{{ key_name }}'
+      InstanceType: '{{ bastion_instance_type }}'
+      ImageId: '{{ bastion_instance_image_id }}'
+      SubnetId: '{{ networking.stack_outputs.PublicSubnet3 }}'
+  register: instance
+
+- name: Create the DNS record for the Bastion
+  route53:
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    overwrite: true
+    state: present
+    zone: '{{ public_domain }}'
+    record: 'sm.{{ public_domain }}'
+    type: A
+    value: '{{ instance.stack_outputs.PublicIP }}'

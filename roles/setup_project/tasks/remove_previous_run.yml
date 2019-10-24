@@ -1,0 +1,13 @@
+- name: Check that the docker-compose.yml file exists on the {{ item }} folder
+  stat:
+    path: '{{ docker_compose_dir }}/{{ item }}/docker-compose.yml'
+  register: docker_compose
+
+- name: Remove {{ item }} previous run
+  docker_compose:
+    project_src: '{{ docker_compose_dir }}/{{ item }}'
+    state: absent
+    remove_images: local
+    remove_orphans: yes
+    remove_volumes: yes
+  when: docker_compose.stat.exists == True

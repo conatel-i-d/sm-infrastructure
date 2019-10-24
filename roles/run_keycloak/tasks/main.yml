@@ -1,0 +1,16 @@
+- name: Copy template files
+  template:
+    src: '{{ item }}'
+    dest: '{{ docker_compose_dir }}/keycloak/{{ item }}'
+    mode: 0600
+  loop:
+    - docker-compose.yml
+  register: keycloak_compose_config
+
+- name: Start the containers
+  docker_compose:
+    project_src: '{{ docker_compose_dir }}/keycloak'
+    restarted: '{{ keycloak_compose_config is changed or keycloak_secret_key is changed }}'
+    build: yes
+    state: present
+  register: keycloak_compose_start

@@ -1,0 +1,31 @@
+- name: Assert variables
+  assert:
+    that:
+      - aws_access_key is defined
+      - aws_region is defined
+      - aws_secret_key is defined
+      - key_name is defined
+      - output_folder is defined
+      - project_name is defined
+      - public_domain is defined
+      - docker_compose_dir is defined
+      - keycloak_admin_username is defined
+      - keycloak_admin_password is defined
+      - keycloak_database_name is defined
+      - awx_admin_username is defined
+      - awx_admin_password is defined
+      - awx_database_name is defined
+      - pg_admin_username is defined
+      - pg_admin_password is defined
+      - api_admin_username is defined
+      - api_admin_password is defined
+      - api_database_name is defined
+      - api_folder is defined
+      - dashboard_folder is defined
+      - certificates_folder is defined
+      - awx_admin_username != keycloak_admin_username
+      - awx_admin_username != api_admin_username
+      - keycloak_admin_username != api_admin_username
+      - awx_database_name != keycloak_database_name
+      - awx_database_name != api_database_name
+      - keycloak_database_name != api_database_name

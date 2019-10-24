@@ -1,0 +1,33 @@
+- include_tasks: remove_previous_run.yml
+  loop:
+    - keycloak
+    - awx
+    - postgres
+    - api
+    - proxy
+    - dashboard
+
+- name: Remove the {{ docker_compose_dir }} directory
+  file:
+    path: '{{ docker_compose_dir }}'
+    state: absent
+
+- name: Create the project directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  loop:
+    - '{{ project_folder }}'
+    - '{{ output_folder }}'
+    - '{{ certificates_folder }}'
+    - '{{ docker_compose_dir }}'
+    - '{{ docker_compose_dir }}/awx'
+    - '{{ docker_compose_dir }}/postgres'
+    - '{{ docker_compose_dir }}/keycloak'
+    - '{{ docker_compose_dir }}/api'
+    - '{{ docker_compose_dir }}/dashboard'
+    - '{{ docker_compose_dir }}/proxy'
+
+- name: Create the docker network
+  docker_network:
+    name: sm_network

@@ -1,0 +1,81 @@
+- name: Verificar la existencia de la llave privada
+  stat:
+    path: '{{ certificates_folder }}/letsencrypt.key'
+  register: letsencrypt_key
+
+- name: Genera un llave privada para utilizar con Let's Encrypt
+  openssl_privatekey:
+    path: '{{ certificates_folder }}/letsencrypt.key'
+  when: letsencrypt_key.stat.exists == False
+
+- name: Verificar la existencia de la llave privada para el dominio publico
+  stat:
+    path: '{{ certificates_folder }}/{{ public_domain }}.key'
+  register: public_domain_key
+
+- name: Genera un llave privada para firmar certificados a utilizar con Let's Encrypt
+  openssl_privatekey:
+    path: '{{ certificates_folder }}/{{ public_domain }}.key'
+  when: public_domain_key.stat.exists == False
+
+- name: Generación de un nuevo CSR
+  openssl_csr:
+    path: '{{ certificates_folder }}/{{ public_domain }}.csr'
+    privatekey_path: '{{ certificates_folder }}/{{ public_domain }}.key'
+    country_name: '{{ country_name }}'
+    organization_name: '{{ organization_name }}'
+    email_address: '{{ email_address }}'
+    common_name: '{{ public_domain }}'
+    subject_alt_name: DNS:{{ public_domain }},DNS:*.{{ public_domain }}
+
+- name: Verificar la existencia del certificado para el dominio publico
+  stat:
+    path: '{{ certificates_folder }}/{{ public_domain }}.csr'
+  register: public_domain_csr
+
+- name: Crear el challenge para el dominio
+  acme_certificate:
+    account_key_src: '{{ certificates_folder }}/letsencrypt.key'
+    account_email: '{{ email_address }}'
+    acme_directory: '{{ acme_certificate_directory }}'
+    acme_version: '2'
+    challenge: dns-01
+    csr: '{{ certificates_folder }}/{{ public_domain }}.csr'
+    dest: '{{ certificates_folder }}/{{ public_domain }}.crt'
+    fullchain_dest: '{{ certificates_folder }}/{{ public_domain }}.fullchain.crt'
+    terms_agreed: yes
+    remaining_days: '30'
+  register: acme_certificate_challenge
+  when: public_domain_csr.stat.exists == False
+
+- name: Creación del registro para validar el challenge en Route 53
+  route53:
+    aws_access_key: '{{ aws_access_key }}'
+    aws_secret_key: '{{ aws_secret_key }}'
+    zone: '{{ public_domain }}'
+    record: '{{ item[0] }}'
+    type: TXT
+    ttl: 60
+    state: present
+    wait: yes
+    overwrite: yes
+    value: "{{ item[1] | map('regex_replace', '^(.*)$', '\"\\1\"' ) | list }}"
+  loop: "{{ acme_certificate_challenge.challenge_data_dns | dictsort }}"
+  when: acme_certificate_challenge is changed
+
+- name: Indicar al CA que el challenge puede ser validado
+  acme_certificate:
+    account_key_src: '{{ certificates_folder }}/letsencrypt.key'
+    account_email: '{{ email_address }}'
+    acme_version: '2'
+    acme_directory: '{{ acme_certificate_directory }}'
+    chain_dest: '{{ certificates_folder }}/{{ public_domain }}.chain.crt'
+    challenge: dns-01
+    csr: '{{ certificates_folder }}/{{ public_domain }}.csr'
+    data: '{{ acme_certificate_challenge }}'
+    dest: '{{ certificates_folder }}/{{ public_domain }}.crt'
+    fullchain_dest: '{{ certificates_folder }}/{{ public_domain }}.fullchain.crt'
+    remaining_days: '30'
+    terms_agreed: yes
+  when: acme_certificate_challenge is changed
+  

@@ -1,0 +1,5 @@
+country_name: UY
+organization_name: Conatel S.A.
+common_name: Conatel
+acme_certificate_directory: 'https://acme-v02.api.letsencrypt.org/directory'
+acme_staging_certificate_directory: 'https://acme-staging-v02.api.letsencrypt.org/directory'

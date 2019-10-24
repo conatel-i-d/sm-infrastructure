@@ -1,0 +1,20 @@
+version: '3'
+services:
+  api:
+    image: {{ project_name }}/api
+    container_name: api
+    restart: unless-stopped
+    environment:
+      DATABASE_URI: postgresql://{{ api_admin_username }}:{{ api_admin_password }}@postgres:5432/{{ api_database_name }}
+{% if env == 'dev' %}
+      FLASK_ENV: prod
+      FLASK_PORT: 80
+    volumes:
+      - {{ api_folder }}:/usr/src/app
+{% endif %}
+    networks:
+      - sm_network
+
+networks:
+  sm_network:
+    external: true

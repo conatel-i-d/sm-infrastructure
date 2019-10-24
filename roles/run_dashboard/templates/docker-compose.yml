@@ -1,0 +1,17 @@
+version: '3'
+services:
+  dashboard:
+    image: {{ project_name }}/dashboard
+    container_name: dashboard
+    restart: unless-stopped
+{% if env == 'dev' %}
+    volumes:
+      - {{ dashboard_folder }}/src:/usr/src/app/src
+      - {{ dashboard_folder }}/public:/usr/src/app/public
+{% endif %}
+    networks:
+      - sm_network
+
+networks:
+  sm_network:
+    external: true

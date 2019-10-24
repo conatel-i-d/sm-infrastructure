@@ -1,0 +1,40 @@
+- name: Copy template files
+  template:
+    src: '{{ item }}'
+    dest: '{{ docker_compose_dir }}/dashboard/{{ item }}'
+    mode: 0600
+  loop:
+    - docker-compose.yml
+  register: compose_config
+
+# This is necessary because the docker_compose module fails when
+# trying to build the image inside the docker-compose file.
+# I don't know why.
+- name: Build the production dashboard image
+  docker_image:
+    build:
+      path: '{{ dashboard_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile'
+    name: '{{ project_name }}/dashboard'
+    source: build
+    push: no
+  when: env != 'dev'
+# This image is build for development
+- name: Build the development dashboard image
+  docker_image:
+    build:
+      path: '{{ dashboard_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile.dev'
+    name: '{{ project_name }}/dashboard'
+    source: build
+    push: no
+  when: env == 'dev'
+
+- name: Start the containers
+  docker_compose:
+    project_src: '{{ docker_compose_dir }}/dashboard'
+    restarted: '{{ compose_config is changed }}'
+    build: no
+    state: present

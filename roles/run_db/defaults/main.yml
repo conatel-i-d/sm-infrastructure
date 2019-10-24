@@ -1,0 +1,8 @@
+pg_version: '12'
+pg_image: 'postgres:{{ pg_version }}'
+pg_hostname: awx_postgres
+pg_admin_username: awx
+pg_admin_password: postgrespass
+pg_database: awx
+pg_port: 5432
+pg_sslmode: require

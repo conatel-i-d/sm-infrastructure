@@ -1,0 +1,27 @@
+---
+dockerhub_version: '7.0.0'
+docker_compose_dir: './docker' 
+
+awx_version: latest
+awx_admin_username: admin
+awx_admin_password: awxpass
+
+awx_web_host: awxweb
+awx_web_image: 'ansible/awx_web:{{ awx_version }}'
+
+awx_task_host: awx
+awx_task_image: 'ansible/awx_task:{{ awx_version }}'
+
+rabbitmq_version: '3.7.4'
+rabbitmq_image: 'ansible/awx_rabbitmq:{{ rabbitmq_version }}'
+rabbitmq_default_vhost: 'awx'
+rabbitmq_erlang_cookie: 'cookiemonster'
+rabbitmq_host: 'rabbitmq'
+rabbitmq_port: '5672'
+rabbitmq_user: 'guest'
+rabbitmq_password: 'guest'
+
+memcached_image: 'memcached'
+memcached_version: 'alpine'
+memcached_host: 'memcached'
+memcached_port: '11211'

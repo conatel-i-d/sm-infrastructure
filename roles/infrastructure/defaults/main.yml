@@ -1,0 +1,4 @@
+networking_stack_name: '{{ project_name }}-networking'
+bastion_stack_name: '{{ project_name }}-bastion'
+bastion_instance_name: '{{ project_name }}-bastion-instance'
+bastion_instance_type: t3.small
