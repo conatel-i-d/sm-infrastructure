@@ -12,10 +12,10 @@ up:
 down:
 	ansible-playbook down.yaml
 
-local:
+deploy:
 	ansible-playbook local.yaml
 
-local-dev:
+dev:
 	ansible-playbook local.yaml --extra-vars "env=dev"
 
 .PHONY: secret inventory up down local
