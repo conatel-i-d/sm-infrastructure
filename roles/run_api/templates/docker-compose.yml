@@ -14,6 +14,12 @@ services:
 {% endif %}
     networks:
       - sm_network
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - sm_network
 
 networks:
   sm_network:
