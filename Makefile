@@ -18,4 +18,12 @@ deploy:
 dev:
 	ansible-playbook local.yaml --extra-vars "env=dev"
 
+build-tower-cli:
+	docker build -t cdh/tower-cli ./files
+
+dump-awx:
+	docker run --network sm_network \
+		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
+		-t cdh/tower-cli receive --all
+
 .PHONY: secret inventory up down local
