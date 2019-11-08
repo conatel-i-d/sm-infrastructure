@@ -1,7 +1,7 @@
 export ANSIBLE_CONFIG=./ansible.cfg
 
 secret:
-	ansible-vault edit secret.yml
+	EDITOR=nano ansible-vault edit secret.yml
 
 inventory:
 	ansible-inventory --list
