@@ -21,9 +21,15 @@ dev:
 build-tower-cli:
 	docker build -t cdh/tower-cli ./files
 
-dump-awx:
+awx-receive:
 	docker run --network sm_network \
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli receive --all
+
+awx-send:
+	docker run --network sm_network \
+		-v $$(pwd)/files/export.json:/root/export.json \
+		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
+		-t cdh/tower-cli send /root/export.json
 
 .PHONY: secret inventory up down local
