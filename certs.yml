@@ -1,0 +1,11 @@
+---
+- name: Create letsencript certs
+  hosts: local
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ./secret.yml
+  vars:
+    state: present
+  roles:
+    - letsencrypt

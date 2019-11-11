@@ -62,7 +62,7 @@ services:
       - "{{ docker_compose_dir }}/awx/SECRET_KEY:/etc/tower/SECRET_KEY"
       - "{{ docker_compose_dir }}/awx/environment.sh:/etc/tower/conf.d/environment.sh"
       - "{{ docker_compose_dir }}/awx/credentials.py:/etc/tower/conf.d/credentials.py"
-      - "{{ project_data_dir }}:/var/lib/awx/projects:rw"
+      - "{{ project_data_dir }}:/var/lib/awx/projects/sm-playbooks:rw"
     environment:
       DATABASE_USER: {{ pg_admin_username }}
       DATABASE_PASSWORD: {{ pg_admin_password }}

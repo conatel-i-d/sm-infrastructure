@@ -6,6 +6,9 @@ secret:
 inventory:
 	ansible-inventory --list
 
+certs:
+	ansible-playbook certs.yml
+
 up:
 	ansible-playbook up.yaml
 

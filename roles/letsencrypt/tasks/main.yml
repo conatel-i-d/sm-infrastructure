@@ -33,6 +33,9 @@
     path: '{{ certificates_folder }}/{{ public_domain }}.csr'
   register: public_domain_csr
 
+- debug:
+    msg: '{{ public_domain_csr }}'
+
 - name: Crear el challenge para el dominio
   acme_certificate:
     account_key_src: '{{ certificates_folder }}/letsencrypt.key'
@@ -46,7 +49,7 @@
     terms_agreed: yes
     remaining_days: '30'
   register: acme_certificate_challenge
-  when: public_domain_csr.stat.exists == False
+  when: public_domain_csr.stat.exists == true
 
 - name: Creación del registro para validar el challenge en Route 53
   route53:
