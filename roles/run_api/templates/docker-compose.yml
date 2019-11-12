@@ -5,7 +5,7 @@ services:
     container_name: api
     restart: unless-stopped
     environment:
-      AWX_USER: {{awx_admin_username}}
+      AWX_USER: {{ awx_admin_username }}
       AWX_PASSWORD: {{ awx_admin_password }}
       ENV: {{ env }}
       DATABASE_URI: postgresql://{{ api_admin_username }}:{{ api_admin_password }}@postgres:5432/{{ api_database_name }}

@@ -2,8 +2,8 @@
   {
     "asset_type": "user",
     "username": "awx",
-    "first_name": "Guzman",
-    "last_name": "Monne",
+    "first_name": "",
+    "last_name": "",
     "email": "root@localhost",
     "is_superuser": true,
     "last_login": "2019-11-08T19:38:41.074911Z"

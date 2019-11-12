@@ -1,6 +1,7 @@
 - name: Assert variables
   assert:
     that:
+      - secret_key is defined
       - aws_access_key is defined
       - aws_region is defined
       - aws_secret_key is defined
