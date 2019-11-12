@@ -6,7 +6,7 @@
     "last_name": "",
     "email": "root@localhost",
     "is_superuser": true,
-    "last_login": "2019-11-08T19:38:41.074911Z"
+    "last_login": "2019-11-12T02:11:51.514320Z"
   },
   {
     "asset_type": "organization",
@@ -107,6 +107,41 @@
   },
   {
     "asset_type": "project",
+    "name": "Demo Project",
+    "scm_type": "git",
+    "scm_url": "https://github.com/ansible/ansible-tower-samples",
+    "organization": "Default",
+    "scm_update_on_launch": true,
+    "asset_relation": {
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "project",
     "name": "sm-playbooks",
     "description": "Repositorio de playbooks para la gestion de switches",
     "local_path": "sm-playbooks",
@@ -128,6 +163,48 @@
         },
         {
           "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "inventory",
+    "name": "Demo Inventory",
+    "organization": "Default",
+    "asset_relation": {
+      "host": [
+        {
+          "name": "localhost",
+          "variables": "ansible_connection: local\nansible_python_interpreter: '{{ ansible_playbook_python }}'"
+        }
+      ],
+      "group": [],
+      "inventory_source": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Ad Hoc",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
           "user": [],
           "team": []
         },
@@ -178,6 +255,40 @@
         },
         {
           "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "Demo Job Template",
+    "inventory": "Demo Inventory",
+    "project": "Demo Project",
+    "playbook": "hello_world.yml",
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [
+        "Demo Credential"
+      ],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Execute",
           "user": [],
           "team": []
         },
@@ -325,6 +436,7 @@
     "playbook": "test-show-interfaces-information.yml",
     "limit": "sw-public",
     "become_enabled": true,
+    "allow_simultaneous": true,
     "asset_relation": {
       "survey_spec": {},
       "notification_templates_error": [],
