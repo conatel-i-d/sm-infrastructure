@@ -9,7 +9,7 @@ services:
       AWX_PASSWORD: {{ awx_admin_password }}
       ENV: {{ env }}
       REALM: {{ keycloak_realm }}
-      KEYCLOAK_URL: https://keycloak:443
+      KEYCLOAK_URL: http://keycloak:8080/auth/
       PUBLIC_KEY: >
         -----BEGIN PUBLIC KEY-----
         {{ keycloak_public_key }}
