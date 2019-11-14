@@ -1,3 +1,25 @@
+- name: Wait for KeyCloak to be ready
+  wait_for:
+    port: 8080
+    host: '{{ public_domain }}'
+    delay: 60
+
+- name: Configure the Public Key for Authentication
+  uri:
+    url: "http://{{public_domain}}:8080/auth/realms/master"
+    method: GET
+    status_code: 200
+    validate_certs: no        
+  register: output
+
+- name: Create Public Key Variable
+  set_fact:
+    keycloak_public_key: "{{ output['json']['public_key']}}"
+
+- name: test
+  debug: 
+    msg: keycloak_public_key
+  
 - name: Copy template files
   template:
     src: '{{ item }}'
