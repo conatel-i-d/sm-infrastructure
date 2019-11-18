@@ -5,7 +5,16 @@
     mode: 0600
   loop:
     - docker-compose.yml
+    - standalone.xml
+    - realm-export.json
   register: keycloak_compose_config
+
+- name: Copy patternfly theme
+  copy:
+    src: '{{ item }}'
+    dest: '{{ docker_compose_dir }}/keycloak/{{ item }}'
+  loop:
+    - patternfly
 
 - name: Start the containers
   docker_compose:

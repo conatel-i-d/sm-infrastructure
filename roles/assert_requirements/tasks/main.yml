@@ -1,6 +1,7 @@
 - name: Assert variables
   assert:
     that:
+      - keycloak_realm is defined
       - secret_key is defined
       - aws_access_key is defined
       - aws_region is defined

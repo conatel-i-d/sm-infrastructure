@@ -6,7 +6,7 @@
 
 - name: Configure the Public Key for Authentication
   uri:
-    url: "http://{{public_domain}}:8080/auth/realms/master"
+    url: "http://{{ public_domain }}:8080/auth/realms/{{ keycloak_realm }}"
     method: GET
     status_code: 200
     validate_certs: no        
