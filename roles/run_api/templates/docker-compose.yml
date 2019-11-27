@@ -10,10 +10,7 @@ services:
       ENV: {{ env }}
       REALM: {{ keycloak_realm }}
       KEYCLOAK_URL: http://keycloak:8080/auth/
-      PUBLIC_KEY: >
-        -----BEGIN PUBLIC KEY-----
-        {{ keycloak_public_key }}
-        -----END PUBLIC KEY-----
+      PUBLIC_KEY: {{ keycloak_public_key }}
       DATABASE_URI: postgresql://{{ api_admin_username }}:{{ api_admin_password }}@postgres:5432/{{ api_database_name }}
 {% if env == 'dev' %}
       FLASK_ENV: prod
