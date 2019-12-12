@@ -2,7 +2,7 @@
   wait_for:
     port: 8080
     host: '{{ public_domain }}'
-    delay: 60
+    delay: 120
 
 - name: Configure the Public Key for Authentication
   uri:
@@ -29,16 +29,6 @@
     - docker-compose.yml
   register: compose_config
 
-- name: Build the production api image
-  docker_image:
-    build:
-      path: '{{ api_folder }}'
-      pull: no
-      dockerfile: 'Dockerfile'
-    name: '{{ project_name }}/api'
-    source: build
-    push: no
-  when: env != 'dev'
 # This image is build for development
 - name: Build the development api image
   docker_image:
@@ -46,7 +36,7 @@
       path: '{{ api_folder }}'
       pull: no
       dockerfile: 'Dockerfile.dev'
-    name: '{{ project_name }}/api'
+    name: '{{ project_name }}-api-dev:{{ version }}'
     source: build
     push: no
   when: env == 'dev'

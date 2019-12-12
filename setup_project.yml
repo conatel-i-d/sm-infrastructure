@@ -1,0 +1,12 @@
+---
+  - name: Create the project
+    hosts: local
+    connection: local
+    gather_facts: no
+    vars_files:
+      - ./secret.yml
+    vars:
+      state: present
+    roles:
+      - assert_requirements
+      - setup_project

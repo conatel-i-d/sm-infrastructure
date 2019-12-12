@@ -2,7 +2,6 @@
   loop:
     - keycloak
     - awx
-    - postgres
     - api
     - proxy
     - dashboard
@@ -22,12 +21,13 @@
     - '{{ certificates_folder }}'
     - '{{ docker_compose_dir }}'
     - '{{ docker_compose_dir }}/awx'
-    - '{{ docker_compose_dir }}/postgres'
     - '{{ docker_compose_dir }}/keycloak'
     - '{{ docker_compose_dir }}/api'
     - '{{ docker_compose_dir }}/dashboard'
     - '{{ docker_compose_dir }}/proxy'
+  when: 'state == "present"'
 
 - name: Create the docker network
   docker_network:
     name: sm_network
+    state: '{{ state }}'

@@ -1,0 +1,16 @@
+- name: Get last version
+  include_vars: "{{ inventory_dir }}/version.ini"
+
+- name: Log into DockerHub
+  docker_login:
+    username: conatelid #'{{ dockerhub_user }}'
+    password: C0n4t3lC0n4t3l #'{{ dockerhub_password }}'
+
+- name: Build images with version
+  docker_image:
+    name: 'conatelid/{{ project_name }}-{{ item }}-prod:{{ version }}'
+    push: yes
+    source: local
+  loop:
+    - api
+    - dashboard

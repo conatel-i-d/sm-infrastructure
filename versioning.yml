@@ -1,0 +1,23 @@
+---
+- name: Generating version
+  hosts: local
+  connection: local
+  gather_facts: true
+  vars_files:
+    - ./secret.yml
+  tasks:
+    - name: Generate new version
+      import_role:
+        name: version_new
+      tags:
+        - new
+    - name: Build new version
+      import_role:
+        name: version_build
+      tags:
+        - build
+    - name: Push new version
+      import_role:
+        name: version_push
+      tags:
+        - push

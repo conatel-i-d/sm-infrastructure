@@ -1,6 +1,8 @@
 ---
-dockerhub_version: '7.0.0'
-docker_compose_dir: './docker' 
+
+docker_compose_dir: './docker'
+
+pg_database: awx
 
 awx_version: latest
 awx_admin_username: admin

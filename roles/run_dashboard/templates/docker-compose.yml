@@ -1,7 +1,11 @@
 version: '3'
 services:
   dashboard:
-    image: {{ project_name }}/dashboard
+{% if env == 'dev' %}
+    image: {{ project_name }}-dashboard-dev:{{ version }}
+{% else %}
+    image: conatelid/{{ project_name }}-dashboard-prod:{{ version }}
+{% endif %}
     container_name: dashboard
     restart: unless-stopped
 {% if env == 'dev' %}

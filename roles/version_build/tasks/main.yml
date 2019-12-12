@@ -1,0 +1,27 @@
+- name: Get last version if file exist
+  include_vars: "{{ inventory_dir }}/version.ini"
+
+- name: Build the production api image
+  docker_image:
+    build:
+      path: '{{ api_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile'
+    name: '{{ project_name }}-api-prod:{{ version }}'
+    repository: 'conatelid/{{ project_name }}-api-prod:{{ version }}'
+    source: build
+    push: no
+
+# This is necessary because the docker_compose module fails when
+# trying to build the image inside the docker-compose file.
+# I don't know why.
+- name: Build the production dashboard image
+  docker_image:
+    build:
+      path: '{{ dashboard_folder }}'
+      pull: no
+      dockerfile: 'Dockerfile'
+    name: '{{ project_name }}-dashboard-prod:{{ version }}'
+    repository: 'conatelid/{{ project_name }}-dashboard-prod:{{ version }}'
+    source: build
+    push: no

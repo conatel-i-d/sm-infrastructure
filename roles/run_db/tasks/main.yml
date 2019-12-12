@@ -1,17 +1,27 @@
+- name: Create the project directories
+  file:
+    path: '{{ docker_compose_dir }}/postgres'
+    state: directory
+
 - name: Copy template files
   template:
     src: '{{ item }}'
     dest: '{{ docker_compose_dir }}/postgres/{{ item }}'
-    mode: 0600
+    mode: 0776
   loop:
     - 00_setup_db.sql
     - docker-compose.yml
-    - Dockerfile
   register: compose_config
 
 - name: Start the containers
   docker_compose:
     project_src: '{{ docker_compose_dir }}/postgres'
     restarted: '{{ compose_config is changed }}'
-    build: yes
-    state: present
+    state: '{{ state }}'
+    remove_volumes: yes 
+    
+- name: Delete postgres docker-compose.yml if state is absent
+  file:
+    state: absent
+    path: '{{ docker_compose_dir }}/postgres'
+  when: 'state == "absent"'

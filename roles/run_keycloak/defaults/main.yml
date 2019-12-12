@@ -1,3 +1,2 @@
-keycloak_version: 7.0.0
 jboss_home: /opt/jboss/keycloak
 keycloak_import: /tmp/realm-export.json

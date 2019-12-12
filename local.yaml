@@ -5,13 +5,10 @@
   gather_facts: no
   vars_files:
     - ./secret.yml
+    - ./version.ini
   vars:
     state: present
   roles:
-    - assert_requirements
-    - setup_project
-#   - letsencrypt
-    - run_db
     - run_awx
     - run_keycloak
     - run_api

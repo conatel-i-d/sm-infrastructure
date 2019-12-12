@@ -1,0 +1,46 @@
+- name: Check that the version.ini exists
+  stat:
+    path: "{{ inventory_dir }}/version.ini"
+  register: stat_result
+
+- name: Create version file if it doesnt exist already
+  copy:
+    dest: "{{ inventory_dir }}/version.ini"
+    content: |
+      version: 1.0.0
+      build_time: "{{ ansible_date_time.iso8601 }}"
+  when: stat_result.stat.exists == False
+
+- name: Get last version if file exist
+  include_vars: "{{ inventory_dir }}/version.ini"
+  when: stat_result.stat.exists == True
+
+- name: Update version
+  version_bump: 
+    current_version: '{{ version }}'
+    bump: '{{ bump }}'
+  register: bump_result
+  when: stat_result.stat.exists == True
+
+- debug:
+    msg: "{{ bump_result }}"
+
+- name: Update version in file
+  lineinfile:
+    path: "{{ inventory_dir }}/version.ini"
+    regexp: '^version: '
+    line: "version: 1.0.0"
+  when: stat_result.stat.exists == False
+
+- name: Update version in file
+  lineinfile:
+    path: "{{ inventory_dir }}/version.ini"
+    regexp: '^version: '
+    line: "version: {{ bump_result['meta']['bumped_version'] }}"
+  when: stat_result.stat.exists == True
+
+- name: Update build time in file
+  lineinfile:
+    path: "{{ inventory_dir }}/version.ini"
+    regexp: '^build_time: '
+    line: 'build_time: {{ ansible_date_time.iso8601 }}'

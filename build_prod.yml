@@ -1,0 +1,12 @@
+---
+  - name: Create the project
+    hosts: local
+    connection: local
+    gather_facts: no
+    vars_files:
+      - ./secret.yml
+      - ./version.ini
+    vars:
+      state: present
+    roles:
+      - version_build

@@ -14,7 +14,7 @@
     content: '{{ secret_key }}'
     dest: '{{ docker_compose_dir }}/awx/SECRET_KEY'
     mode: 0600
-  register: aws_secret_key
+  register: awx_secret_key
 
 - name: Start the containers
   docker_compose:

@@ -1,12 +1,13 @@
 version: '2'
 services:
   postgres:
-    image: {{ project_name }}/postgres:{{ pg_version }}
+    image: postgres:{{ pg_version }}
     build: {{ docker_compose_dir }}/postgres
     restart: unless-stopped
     container_name: postgres
-#   volumes:
-#    - postgres-volume:/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./00_setup_db.sql:/docker-entrypoint-initdb.d/00_setup_db.sql.sql
+      - postgres-volume:/var/lib/postgresql/data/pgdata
     environment:
       POSTGRES_PASSWORD: {{ pg_admin_password }}
       POSTGRES_USER: {{ pg_admin_username }}
@@ -17,3 +18,6 @@ services:
 networks:
   sm_network:
     external: true
+
+volumes:
+  postgres-volume:
