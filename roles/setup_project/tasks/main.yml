@@ -30,4 +30,4 @@
 - name: Create the docker network
   docker_network:
     name: sm_network
-    state: '{{ state }}'
+    state: 'present'
