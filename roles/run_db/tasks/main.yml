@@ -12,6 +12,9 @@
     - 00_setup_db.sql
     - docker-compose.yml
   register: compose_config
+  
+- debug:
+    msg: '{{ docker_compose_dir }}/postgres'
 
 - name: Start the containers
   docker_compose:

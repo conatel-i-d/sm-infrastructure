@@ -516,10 +516,19 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
+{% if env == 'dev' %}
+        "http://{{ public_domain }}/*"
+{% else %}
         "https://{{ public_domain }}/*"
+{% endif %}
       ],
       "webOrigins": [
+{% if env == 'dev' %}
+        "http://{{ public_domain }}"
+{% else %}
         "https://{{ public_domain }}"
+{% endif %}
+        
       ],
       "notBefore": 0,
       "bearerOnly": false,

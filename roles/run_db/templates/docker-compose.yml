@@ -2,7 +2,6 @@ version: '2'
 services:
   postgres:
     image: postgres:{{ pg_version }}
-    build: {{ docker_compose_dir }}/postgres
     restart: unless-stopped
     container_name: postgres
     volumes:

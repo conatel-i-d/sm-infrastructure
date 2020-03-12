@@ -3,6 +3,9 @@ services:
   api:
 {% if env == 'dev' %}
     image: {{ project_name }}-api-dev:{{ version }}
+    build: 
+      context: {{ project_folder }}/sm-api
+      dockerfile: Dockerfile.dev
 {% else %}
     image: conatelid/{{ project_name }}-api-prod:{{ version }}
 {% endif %}
@@ -16,9 +19,10 @@ services:
       KEYCLOAK_URL: http://keycloak:8080/auth/
       PUBLIC_KEY: {{ keycloak_public_key }}
       DATABASE_URI: postgresql://{{ api_admin_username }}:{{ api_admin_password }}@postgres:5432/{{ api_database_name }}
-# OjO parece esta mal flask_env no coincide con jinja env... pero estaba asi... OjO!!!!
+      CISCO_PRIME_USER: {{ cisco_prime_user }}
+      CISCO_PRIME_PASSWORD: {{ cisco_prime_password }} 
 {% if env == 'dev' %}
-      FLASK_ENV: prod
+      FLASK_ENV: {{ env }}
       FLASK_PORT: 80
     volumes:
       - {{ api_folder }}:/usr/src/app

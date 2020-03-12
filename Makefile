@@ -1,5 +1,8 @@
 export ANSIBLE_CONFIG=./ansible.cfg
 
+create_secrets:
+	ansible-vault create secret.yml
+
 secret:
 	ansible-vault edit secret.yml
 
@@ -18,7 +21,7 @@ down:
 db_up:
 	ansible-playbook db.yml --extra-vars "state=present"
 
-db_down:
+_db_down:
 	ansible-playbook db.yml --extra-vars "state=absent"
 
 setup:

@@ -13,7 +13,7 @@
   copy:
     src: '{{ item }}'
     dest: '{{ docker_compose_dir }}/proxy/{{ item }}'
-    mode: 0600
+    mode: 0755
   loop:
     - favicon.ico
 
