@@ -65,4 +65,4 @@ awx-send:
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli send /root/export.json
 
-.PHONY: secret inventory up down local version_minor version_mayor version_patch db_up db_down setup tear_down version_push prod
+.PHONY: secret inventory up down local version_minor version_mayor version_patch db_up _db_down setup tear_down version_push prod
