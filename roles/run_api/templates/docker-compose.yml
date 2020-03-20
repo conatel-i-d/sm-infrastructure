@@ -22,6 +22,8 @@ services:
       CISCO_PRIME_BASE_USER: {{ cisco_prime_base_url }}
       CISCO_PRIME_USER: {{ cisco_prime_user }}
       CISCO_PRIME_PASSWORD: {{ cisco_prime_password }} 
+      ANSIBLE_SWITCHES_USER: {{  ansible_switches_user }}
+      ANSIBLE_SWITCHES_SSH_PASS: {{ ansible_switches_ssh_pass }}
 {% if env == 'dev' %}
       FLASK_ENV: {{ env }}
       FLASK_PORT: 80
