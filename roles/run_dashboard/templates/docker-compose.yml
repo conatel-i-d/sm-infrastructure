@@ -3,6 +3,9 @@ services:
   dashboard:
 {% if env == 'dev' %}
     image: {{ project_name }}-dashboard-dev:{{ version }}
+    build:
+      context: {{ dashboard_folder }}
+      dockerfile: 'Dockerfile.dev'
 {% else %}
     image: conatelid/{{ project_name }}-dashboard-prod:{{ version }}
 {% endif %}

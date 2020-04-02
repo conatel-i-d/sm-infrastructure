@@ -4,7 +4,7 @@ services:
 {% if env == 'dev' %}
     image: {{ project_name }}-api-dev:{{ version }}
     build: 
-      context: {{ project_folder }}/sm-api
+      context: {{ api_folder }}
       dockerfile: Dockerfile.dev
 {% else %}
     image: conatelid/{{ project_name }}-api-prod:{{ version }}
