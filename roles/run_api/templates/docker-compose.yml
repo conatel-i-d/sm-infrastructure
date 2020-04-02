@@ -2,7 +2,7 @@ version: '3'
 services:
   api:
 {% if env == 'dev' %}
-    image: {{ project_name }}-api-dev:{{ version }}
+    image: conatelid/{{ project_name }}-api-dev:{{ version }}
     build: 
       context: {{ api_folder }}
       dockerfile: Dockerfile.dev
