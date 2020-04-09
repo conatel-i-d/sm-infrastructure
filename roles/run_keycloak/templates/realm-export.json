@@ -41,12 +41,20 @@
   "roles": {
     "realm": [
       {
+        "id": "b742897c-2d21-4c41-8a09-971c20818a2e",
+        "name": "operator",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "sm",
+        "attributes": {}
+      },
+      {
         "id": "124be87d-c3b9-4338-b566-87e72cc347ac",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false,
-        "containerId": "{{ keycloak_realm }}",
+        "containerId": "sm",
         "attributes": {}
       },
       {
@@ -55,7 +63,7 @@
         "description": "Rol de administración del sistema",
         "composite": false,
         "clientRole": false,
-        "containerId": "{{ keycloak_realm }}",
+        "containerId": "sm",
         "attributes": {}
       },
       {
@@ -64,7 +72,7 @@
         "description": "${role_offline-access}",
         "composite": false,
         "clientRole": false,
-        "containerId": "{{ keycloak_realm }}",
+        "containerId": "sm",
         "attributes": {}
       }
     ],
@@ -1821,6 +1829,21 @@
     "username": "admin",
     "clientRoles": {
       "dashboard": [ "administrator" ]
+    },
+    "credentials": [{
+        "value" : "password",
+        "temporary" : false,
+        "type": "password"
+    }]
+  }, {
+    "email": "operator@test.com",
+    "emailVerified": true,
+    "enabled": true,
+    "firstName": "Operator",
+    "lastName": "User",
+    "username": "operator",
+    "clientRoles": {
+      "dashboard": [ "operator" ]
     },
     "credentials": [{
         "value" : "password",
