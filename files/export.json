@@ -254,7 +254,7 @@
           "source_script": "swtches_inv",
           "verbosity": 2,
           "update_on_launch": true,
-          "update_cache_timeout": 1800,
+          "update_cache_timeout": 300,
           "schedules": []
         }
       ],
