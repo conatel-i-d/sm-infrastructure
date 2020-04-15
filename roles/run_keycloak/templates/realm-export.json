@@ -1830,6 +1830,7 @@
     "clientRoles": {
       "dashboard": [ "administrator" ]
     },
+    "realmRoles": [ "administrator" ],
     "credentials": [{
         "value" : "password",
         "temporary" : false,
@@ -1845,6 +1846,7 @@
     "clientRoles": {
       "dashboard": [ "operator" ]
     },
+    "realmRoles": [ "operator" ],
     "credentials": [{
         "value" : "password",
         "temporary" : false,
