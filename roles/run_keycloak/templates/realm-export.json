@@ -1493,13 +1493,13 @@
             "uid"
           ],
           "bindCredential": [
-            "{{ }}"
+            "{{ ldap_user }}"
           ],
           "changedSyncPeriod": [
             "60"
           ],
           "bindDn": [
-            "cn=xxxxx,dc=cmtgag,dc=local"
+            "cn={{ ldap_password }},dc=cmtgag,dc=local"
           ],
           "lastSync": [
             "1560441732"
