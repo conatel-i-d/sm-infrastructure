@@ -1,6 +1,6 @@
 {
-  "id": "{{ keycloak_realm }}",
-  "realm": "{{ keycloak_realm }}",
+  "id": "sm",
+  "realm": "sm",
   "displayName": "Switch Manager",
   "displayNameHtml": "Conatel Switch Manager",
   "notBefore": 0,
@@ -370,10 +370,6 @@
     }
   },
   "groups": [],
-  "defaultRoles": [
-    "uma_authorization",
-    "offline_access"
-  ],
   "requiredCredentials": [
     "password"
   ],
@@ -386,14 +382,6 @@
   "otpSupportedApplications": [
     "FreeOTP",
     "Google Authenticator"
-  ],
-  "scopeMappings": [
-    {
-      "clientScope": "offline_access",
-      "roles": [
-        "offline_access"
-      ]
-    }
   ],
   "clients": [
     {
@@ -531,30 +519,21 @@
       ]
     },
     {
-      "id": "6d431d5f-e26d-4624-84d2-f08778daeb4b",
+      "id": "468307ab-0e8a-4f39-9743-ad0cc79190d7",
       "clientId": "dashboard",
       "name": "SM Dashboard",
       "description": "Dashboard de administración del Conatel Switch Manager",
-      "rootUrl": "https://{{ public_domain }}",
-      "adminUrl": "https://{{ public_domain }}",
+      "rootUrl": "https://sm.conatel.cloud",
+      "adminUrl": "https://sm.conatel.cloud",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-{% if env == 'dev' %}
-        "http://{{ public_domain }}/*"
-{% else %}
-        "https://{{ public_domain }}/*"
-{% endif %}
+        "http://sm.conatel.cloud/*"
       ],
       "webOrigins": [
-{% if env == 'dev' %}
-        "http://{{ public_domain }}"
-{% else %}
-        "https://{{ public_domain }}"
-{% endif %}
-        
+        "http://sm.conatel.cloud"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -608,10 +587,6 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "defaultRoles": [
-        "view-profile",
-        "manage-account"
-      ],
       "redirectUris": [
         "/auth/realms/sm/account/*"
       ],
@@ -1073,11 +1048,11 @@
           "protocolMapper": "oidc-usermodel-realm-role-mapper",
           "consentRequired": false,
           "config": {
-            "multivalued": "true",
             "user.attribute": "foo",
             "access.token.claim": "true",
             "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
+            "jsonType.label": "String",
+            "multivalued": "true"
           }
         },
         {
@@ -1087,11 +1062,11 @@
           "protocolMapper": "oidc-usermodel-client-role-mapper",
           "consentRequired": false,
           "config": {
-            "multivalued": "true",
             "user.attribute": "foo",
             "access.token.claim": "true",
             "claim.name": "resource_access.${client_id}.roles",
-            "jsonType.label": "String"
+            "jsonType.label": "String",
+            "multivalued": "true"
           }
         },
         {
@@ -1158,6 +1133,7 @@
           "consentRequired": false,
           "config": {
             "multivalued": "true",
+            "userinfo.token.claim": "true",
             "user.attribute": "foo",
             "id.token.claim": "true",
             "access.token.claim": "true",
@@ -1191,15 +1167,15 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {
-    "password": "{{ smtp_password }}",
+    "password": "**********",
     "starttls": "false",
     "auth": "true",
-    "port": "{{ smtp_port }}",
-    "host": "{{ smtp_server }}",
-    "from": "{{ smtp_from }}",
-    "fromDisplayName": "{{ smtp_from_display_name }}",
+    "port": "25",
+    "host": "email-smtp.us-east-1.amazonaws.com",
+    "from": "sm@mail.conatel.cloud",
+    "fromDisplayName": "Conatel Switch Manager",
     "ssl": "false",
-    "user": "{{ smtp_username }}"
+    "user": "AKIAZSXBLUFHZKO34HPV"
   },
   "eventsEnabled": false,
   "eventsListeners": [
@@ -1211,21 +1187,6 @@
   "components": {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
-        "id": "bc064418-ad63-474e-b90b-a9c409659e44",
-        "name": "Trusted Hosts",
-        "providerId": "trusted-hosts",
-        "subType": "anonymous",
-        "subComponents": {},
-        "config": {
-          "host-sending-registration-request-must-match": [
-            "true"
-          ],
-          "client-uris-must-match": [
-            "true"
-          ]
-        }
-      },
-      {
         "id": "fca3db28-24ec-4fba-855f-531524c775b5",
         "name": "Allowed Protocol Mapper Types",
         "providerId": "allowed-protocol-mappers",
@@ -1233,14 +1194,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
+            "oidc-usermodel-attribute-mapper",
             "saml-user-attribute-mapper",
-            "oidc-usermodel-property-mapper",
             "oidc-address-mapper",
-            "saml-user-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
             "saml-role-list-mapper",
             "oidc-full-name-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "saml-user-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-usermodel-property-mapper"
           ]
         }
       },
@@ -1260,14 +1221,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-attribute-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper",
-            "saml-user-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-address-mapper",
             "saml-role-list-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-full-name-mapper",
             "oidc-usermodel-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper"
+            "saml-user-property-mapper",
+            "saml-user-attribute-mapper"
           ]
         }
       },
@@ -1284,18 +1245,6 @@
         }
       },
       {
-        "id": "0b313777-0d6d-4bd6-a90a-7395828f2b7a",
-        "name": "Allowed Client Scopes",
-        "providerId": "allowed-client-templates",
-        "subType": "anonymous",
-        "subComponents": {},
-        "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
-        }
-      },
-      {
         "id": "8b85d5a7-7cf9-4344-a499-c1e0df4cc3bc",
         "name": "Full Scope Disabled",
         "providerId": "scope",
@@ -1304,10 +1253,37 @@
         "config": {}
       },
       {
+        "id": "bc064418-ad63-474e-b90b-a9c409659e44",
+        "name": "Trusted Hosts",
+        "providerId": "trusted-hosts",
+        "subType": "anonymous",
+        "subComponents": {},
+        "config": {
+          "host-sending-registration-request-must-match": [
+            "true"
+          ],
+          "client-uris-must-match": [
+            "true"
+          ]
+        }
+      },
+      {
         "id": "ed541f6e-70c5-4218-8068-185f8658c816",
         "name": "Allowed Client Scopes",
         "providerId": "allowed-client-templates",
         "subType": "authenticated",
+        "subComponents": {},
+        "config": {
+          "allow-default-scopes": [
+            "true"
+          ]
+        }
+      },
+      {
+        "id": "0b313777-0d6d-4bd6-a90a-7395828f2b7a",
+        "name": "Allowed Client Scopes",
+        "providerId": "allowed-client-templates",
+        "subType": "anonymous",
         "subComponents": {},
         "config": {
           "allow-default-scopes": [
@@ -2122,7 +2098,7 @@
   "supportedLocales": [],
   "authenticationFlows": [
     {
-      "id": "378dd591-0794-45df-9a45-788e3987fe28",
+      "id": "c1e56ddb-b59b-4250-9d33-ed8f4682d344",
       "alias": "Handle Existing Account",
       "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
       "providerId": "basic-flow",
@@ -2153,7 +2129,7 @@
       ]
     },
     {
-      "id": "63530ae6-5bfa-4349-9e6b-69d1e1f3135f",
+      "id": "f77c6b92-0df5-4d66-bf4f-87363c5eba19",
       "alias": "Verify Existing Account by Re-authentication",
       "description": "Reauthentication of existing account",
       "providerId": "basic-flow",
@@ -2177,7 +2153,7 @@
       ]
     },
     {
-      "id": "b2f92a72-2681-4d43-be06-0ab5b6c8ff3e",
+      "id": "4d5c6d94-d176-495d-9a6d-3b2c5e60ffa9",
       "alias": "browser",
       "description": "browser based authentication",
       "providerId": "basic-flow",
@@ -2215,7 +2191,7 @@
       ]
     },
     {
-      "id": "59c8ed8b-fc87-4c57-9dd7-1aa4d7461f74",
+      "id": "41208680-c02d-4169-b1a4-16b94a99c48c",
       "alias": "clients",
       "description": "Base authentication for clients",
       "providerId": "client-flow",
@@ -2253,7 +2229,7 @@
       ]
     },
     {
-      "id": "ed1e49b8-bd24-48be-8383-ed49f74ad07f",
+      "id": "03d0f27e-496b-4c95-b37f-cd3213817fd3",
       "alias": "direct grant",
       "description": "OpenID Connect Resource Owner Grant",
       "providerId": "basic-flow",
@@ -2284,7 +2260,7 @@
       ]
     },
     {
-      "id": "eeb80c11-93bb-473d-8e42-3db050d3aa77",
+      "id": "85c4be28-7d37-455b-9ee5-6bc06564bb4d",
       "alias": "docker auth",
       "description": "Used by Docker clients to authenticate against the IDP",
       "providerId": "basic-flow",
@@ -2301,7 +2277,7 @@
       ]
     },
     {
-      "id": "1ff12703-3108-4cde-bf13-cd094f16e671",
+      "id": "4557024c-0baa-4ec8-b983-86d320fed53b",
       "alias": "first broker login",
       "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
       "providerId": "basic-flow",
@@ -2334,7 +2310,7 @@
       ]
     },
     {
-      "id": "f1fac630-5793-438d-bd3e-79d4385f7297",
+      "id": "3a22192e-b7ae-40c4-90b8-3b3185165070",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
       "providerId": "basic-flow",
@@ -2358,7 +2334,7 @@
       ]
     },
     {
-      "id": "61a6ea18-e50f-4e5b-97b3-b0165633ad9a",
+      "id": "35386622-6975-4b0b-b993-3d703f8ad9e1",
       "alias": "http challenge",
       "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
       "providerId": "basic-flow",
@@ -2396,7 +2372,7 @@
       ]
     },
     {
-      "id": "bb35a763-792e-459e-8964-c4aa74d908f2",
+      "id": "670d5570-99b5-454d-b0a7-70727e9949f4",
       "alias": "registration",
       "description": "registration flow",
       "providerId": "basic-flow",
@@ -2414,7 +2390,7 @@
       ]
     },
     {
-      "id": "0aab55f2-8a0c-4901-86ae-ce1030fb7d6b",
+      "id": "1f1d286b-d145-4bdc-a251-499cb09cf89c",
       "alias": "registration form",
       "description": "registration form",
       "providerId": "form-flow",
@@ -2452,7 +2428,7 @@
       ]
     },
     {
-      "id": "b297da05-c54d-49ef-abfb-e99628e5ebec",
+      "id": "e1867590-62b8-4f2b-a301-ea56612ab244",
       "alias": "reset credentials",
       "description": "Reset credentials for a user if they forgot their password or something",
       "providerId": "basic-flow",
@@ -2490,7 +2466,7 @@
       ]
     },
     {
-      "id": "8046a526-a401-4663-bc96-6199b73787c1",
+      "id": "7619bdb5-ebb6-436a-aacb-d4e31e00c2b6",
       "alias": "saml ecp",
       "description": "SAML ECP Profile Authentication Flow",
       "providerId": "basic-flow",
@@ -2509,14 +2485,14 @@
   ],
   "authenticatorConfig": [
     {
-      "id": "3b72c4fa-7b5a-4166-ac27-975d9ab6297b",
+      "id": "7be747da-1c2a-4bb9-9524-cd7d0c40d994",
       "alias": "create unique user config",
       "config": {
         "require.password.update.after.registration": "false"
       }
     },
     {
-      "id": "0092312f-9c90-45f5-9ee9-5ad03a57f61e",
+      "id": "2fb31544-f62e-4347-9772-5447c6f268cd",
       "alias": "review profile config",
       "config": {
         "update.profile.on.first.login": "missing"
@@ -2600,38 +2576,5 @@
     "offlineSessionMaxLifespanEnabled": "false"
   },
   "keycloakVersion": "7.0.0",
-  "userManagedAccessAllowed": false,
-  "users": [{
-    "email": "{{ email_address }}",
-    "emailVerified": true,
-    "enabled": true,
-    "firstName": "Administrator",
-    "lastName": "User",
-    "username": "admin",
-    "clientRoles": {
-      "dashboard": [ "administrator" ]
-    },
-    "realmRoles": [ "administrator" ],
-    "credentials": [{
-        "value" : "password",
-        "temporary" : false,
-        "type": "password"
-    }]
-  }, {
-    "email": "operator@test.com",
-    "emailVerified": true,
-    "enabled": true,
-    "firstName": "Operator",
-    "lastName": "User",
-    "username": "operator",
-    "clientRoles": {
-      "dashboard": [ "operator" ]
-    },
-    "realmRoles": [ "operator" ],
-    "credentials": [{
-        "value" : "password",
-        "temporary" : false,
-        "type": "password"
-    }]
-  }]
+  "userManagedAccessAllowed": false
 }
