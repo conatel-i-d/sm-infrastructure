@@ -1401,7 +1401,7 @@
               "subComponents": {},
               "config": {
                 "ldap.attribute": [
-                  "cn"
+                  "sAMAccountName"
                 ],
                 "is.mandatory.in.ldap": [
                   "true"
@@ -1532,7 +1532,7 @@
             "{{ ldap_user }}"
           ],
           "usernameLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "bindCredential": [
             "{{ ldap_password }}"
@@ -1580,7 +1580,7 @@
             "person, organizationalPerson, user"
           ],
           "rdnLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "validatePasswordPolicy": [
             "true"
@@ -1690,7 +1690,7 @@
               "subComponents": {},
               "config": {
                 "ldap.attribute": [
-                  "cn"
+                  "sAMAccountName"
                 ],
                 "is.mandatory.in.ldap": [
                   "true"
@@ -1783,7 +1783,7 @@
             "{{ ldap_user }}"
           ],
           "usernameLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "bindCredential": [
             "{{ ldap_password }}"
@@ -1828,7 +1828,7 @@
             "person, organizationalPerson, user"
           ],
           "rdnLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "validatePasswordPolicy": [
             "false"
@@ -1920,7 +1920,7 @@
               "subComponents": {},
               "config": {
                 "ldap.attribute": [
-                  "cn"
+                  "sAMAccountName"
                 ],
                 "is.mandatory.in.ldap": [
                   "true"
@@ -2023,7 +2023,7 @@
             "{{ ldap_user }}"
           ],
           "usernameLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "bindCredential": [
             "{{ ldap_password }}"
@@ -2068,7 +2068,7 @@
             "person, organizationalPerson, user"
           ],
           "rdnLDAPAttribute": [
-            "cn"
+            "sAMAccountName"
           ],
           "validatePasswordPolicy": [
             "false"
