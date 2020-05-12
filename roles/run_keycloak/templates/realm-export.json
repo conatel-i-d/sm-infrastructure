@@ -1538,7 +1538,7 @@
             "{{ ldap_password }}"
           ],
           "changedSyncPeriod": [
-            "-1"
+            "3600"
           ],
           "lastSync": [
             "1589226691"
@@ -1788,6 +1788,9 @@
           "bindCredential": [
             "{{ ldap_password }}"
           ],
+          "changedSyncPeriod": [
+            "3600"
+          ],
           "lastSync": [
             "1589226678"
           ],
@@ -2017,7 +2020,7 @@
             "true"
           ],
           "changedSyncPeriod": [
-            "-1"
+            "3600"
           ],
           "bindDn": [
             "{{ ldap_user }}"
