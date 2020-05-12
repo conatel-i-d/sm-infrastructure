@@ -20,11 +20,11 @@ down:
 
 db_up:
 	ansible-playbook db.yml --extra-vars "state=present"
-	cd sm-infraescructure/lib/docker/postgres && docker-compose up -d && cd -
+	cd lib/docker/postgres && docker-compose up -d --force-recreate && cd -
 
 _db_down:
-	cd sm-infraescructure/lib/docker/postgres && docker-compose up -d && cd -
-	rm sm-infraescructure/lib/docker/postgres
+	(cd lib/docker/postgres && docker-compose down -v) | true && cd -
+	rm -rf lib/docker/postgres
 setup:
 	ansible-playbook setup_project.yml --extra-vars "state=present"
 
