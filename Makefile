@@ -23,7 +23,7 @@ db_up:
 	cd lib/docker/postgres && docker-compose up -d --force-recreate && cd -
 
 _db_down:
-	(cd lib/docker/postgres && docker-compose down -v) | true && cd -
+	docker stop postgres && docker rm postgres
 	rm -rf lib/docker/postgres
 setup:
 	ansible-playbook setup_project.yml --extra-vars "state=present"
