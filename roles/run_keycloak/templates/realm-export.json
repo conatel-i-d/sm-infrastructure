@@ -535,14 +535,19 @@
       "clientId": "dashboard",
       "name": "SM Dashboard",
       "description": "Dashboard de administración del Conatel Switch Manager",
-      "rootUrl": "https://{{ public_domain }}",
+{% if env == 'dev' %}
+      "adminUrl": "http://{{ public_domain }}",
+      "rootUrl": "http://{{ public_domain }}",
+{% else %}
       "adminUrl": "https://{{ public_domain }}",
+      "rootUrl": "https://{{ public_domain }}",
+{% endif %}
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-{% if env == 'dev' %}
+{% if  env == 'dev' %}
         "http://{{ public_domain }}/*"
 {% else %}
         "https://{{ public_domain }}/*"
@@ -554,7 +559,6 @@
 {% else %}
         "https://{{ public_domain }}"
 {% endif %}
-        
       ],
       "notBefore": 0,
       "bearerOnly": false,
