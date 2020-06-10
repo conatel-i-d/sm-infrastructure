@@ -193,12 +193,12 @@
         {
           "name": "sw-private",
           "description": "Switch conectado al wifi de HostedPBX",
-          "variables": "---\nansible_host: 172.16.1.55\nansible_network_os: ios\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nnetconf_username: netconf_username\nnetconf_password: C0n4t3l."
+          "variables": "---\nansible_host: {{ sw_private_ip }}\nansible_network_os: {{ sw_private_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_private_ssh_port }}\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}"
         },
         {
           "name": "sw-public",
           "description": "Switch p\u00fablicado en Internet para hacer pruebas",
-          "variables": "---\nansible_host: 200.58.153.100\nansible_network_os: ios\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: 2222\nansible_user: ialmandos\nansible_ssh_pass: ialmandos"
+          "variables": "---\nansible_host: {{ sw_public_ip }}\nansible_network_os: {{ sw_public_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_public_ssh_port }}\nansible_user: {{ sw_public_ssh_user }}\nansible_ssh_pass: {{ sw_public_ssh_pass }}"
         }
       ],
       "group": [],
@@ -234,16 +234,16 @@
   },
   {
     "asset_type": "inventory",
-    "name": "test-switches",
+    "name": "{{ ENV }}-switches",
     "description": "Lista de switches de prueba",
     "organization": "Default",
-    "variables": "---\nansible_user: conatel\nansible_ssh_pass: C0n4t3l.\nansible_connection: network_cli",
+    "variables": "---\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}\nansible_connection: network_cli",
     "asset_relation": {
       "host": [
         {
           "name": "sw-private",
           "description": "Switch conectado al wifi de HostedPBX",
-          "variables": "---\nansible_host: 172.16.1.55\nansible_network_os: ios\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nnetconf_username: netconf_username\nnetconf_password: C0n4t3l."
+          "variables": "---\nansible_host: {{ sw_private_ip }}\nansible_network_os: {{ sw_private_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_private_ssh_port }}\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}"
         }
       ],
       "group": [],
@@ -323,11 +323,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-debug",
+    "name": "{{ ENV }}-debug",
     "description": "Playbook de prueba para verificar el funcionamiento de los roles",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-debug.yml",
+    "playbook": "{{ ENV }}-debug.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "asset_relation": {
@@ -360,11 +360,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-reset-interface",
+    "name": "{{ ENV }}-reset-interface",
     "description": "Reinicia la interfaz de un switch",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-reset-interface.yml",
+    "playbook": "{{ ENV }}-reset-interface.yml",
     "ask_limit_on_launch": true,
     "survey_enabled": true,
     "become_enabled": true,
@@ -415,11 +415,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-interfaces",
+    "name": "{{ ENV }}-show-interfaces",
     "description": "Muestra las interfaces de cada switch",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-interfaces.yml",
+    "playbook": "{{ ENV }}-show-interfaces.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "allow_simultaneous": true,
@@ -453,11 +453,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-interfaces-information",
+    "name": "{{ ENV }}-show-interfaces-information",
     "description": "Muestra informaci\u00f3n m\u00e1s rica de una interface",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-interfaces-information.yml",
+    "playbook": "{{ ENV }}-show-interfaces-information.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "allow_simultaneous": true,
@@ -491,11 +491,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-interfaces-switchport",
+    "name": "{{ ENV }}-show-interfaces-switchport",
     "description": "Muestra la configuraci\u00f3n switchport de cada interfaz",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-interfaces-switchport.yml",
+    "playbook": "{{ ENV }}-show-interfaces-switchport.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "allow_simultaneous": true,
@@ -529,11 +529,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-mac-address-table",
+    "name": "{{ ENV }}-show-mac-address-table",
     "description": "Obtiene la",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-mac-address-table.yml",
+    "playbook": "{{ ENV }}-show-mac-address-table.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "allow_simultaneous": true,
@@ -567,11 +567,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-version",
+    "name": "{{ ENV }}-show-version",
     "description": "Obtiene la versi\u00f3n del switch",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-version.yml",
+    "playbook": "{{ ENV }}-show-version.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "asset_relation": {
@@ -604,11 +604,11 @@
   },
   {
     "asset_type": "job_template",
-    "name": "test-show-vlan",
+    "name": "{{ ENV }}-show-vlan",
     "description": "Muestra la informaci\u00f3n de las VLANs del switch",
-    "inventory": "test-switches",
+    "inventory": "{{ ENV }}-switches",
     "project": "sm-playbooks",
-    "playbook": "test-show-vlan.yml",
+    "playbook": "{{ ENV }}-show-vlan.yml",
     "ask_limit_on_launch": true,
     "become_enabled": true,
     "asset_relation": {
@@ -641,7 +641,7 @@
   },
   {
     "asset_type": "workflow",
-    "name": "test-show-version-workflow",
+    "name": "{{ ENV }}-show-version-workflow",
     "inventory": 2,
     "asset_relation": {
       "survey_spec": {},
@@ -649,7 +649,7 @@
         {
           "name": "node0",
           "unified_job_type": "job",
-          "unified_job_name": "test-show-version",
+          "unified_job_name": "{{ ENV }}-show-version",
           "success_nodes": [
             "node2"
           ],
@@ -661,7 +661,7 @@
         {
           "name": "node1",
           "unified_job_type": "job",
-          "unified_job_name": "test-show-interfaces",
+          "unified_job_name": "{{ ENV }}-show-interfaces",
           "success_nodes": [],
           "failure_nodes": [],
           "always_nodes": []
@@ -669,7 +669,7 @@
         {
           "name": "node2",
           "unified_job_type": "job",
-          "unified_job_name": "test-debug",
+          "unified_job_name": "{{ ENV }}-debug",
           "success_nodes": [],
           "failure_nodes": [],
           "always_nodes": []

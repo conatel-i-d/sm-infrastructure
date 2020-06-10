@@ -1,0 +1,19 @@
+---
+- name: Create new tower config from template
+  hosts: local
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ./secret.yml
+    - ./version.ini
+  vars:
+    state: present
+  tasks:
+    - name: Copy template files
+      template:
+        src: '{{ project_folder }}/sm-infrastructure/files/{{ item }}.template'
+        dest: '{{ project_folder }}/sm-infrastructure/files/{{ item }}'
+        mode: 0776
+      loop:
+        - export.json
+        - tower_cli.cfg

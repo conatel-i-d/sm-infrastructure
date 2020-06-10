@@ -61,6 +61,7 @@ awx-receive:
 		-t cdh/tower-cli receive --all
 
 awx-send:
+	ansible-playbook update_tower_config.yml
 	docker run --network sm_network \
 		-v $$(pwd)/files/export.json:/root/export.json \
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
