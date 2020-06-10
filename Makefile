@@ -60,14 +60,19 @@ awx-receive:
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli receive --all
 
-awx-send:
-	ansible-playbook update_tower_config.yml
+awx-send-dev:
+	ansible-playbook update_tower_config.yml --extra-vars "env=dev"
 	docker run --network sm_network \
 		-v $$(pwd)/files/export.json:/root/export.json \
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli send /root/export.json
 
-
+awx-send-prod:
+	ansible-playbook update_tower_config.yml --extra-vars "env=prod"
+	docker run --network sm_network \
+		-v $$(pwd)/files/export.json:/root/export.json \
+		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
+		-t cdh/tower-cli send /root/export.json
 
 update_certs:
 	cd lib/docker/proxy && docker-compose up -d --force-recreate && cd -
