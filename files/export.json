@@ -188,7 +188,7 @@
       "host": [
         {
           "name": "localhost",
-          "variables": "ansible_connection: local\nansible_python_interpreter: /usr/bin/python3"
+          "variables": "ansible_connection: local\nansible_python_interpreter: /usr/bin/python2"
         },
         {
           "name": "sw-private",
