@@ -19,6 +19,7 @@ services:
       KEYCLOAK_URL: http://keycloak:8080/auth/
       PUBLIC_KEY: {{ keycloak_public_key }}
       DATABASE_URI: postgresql://{{ api_admin_username }}:{{ api_admin_password }}@postgres:5432/{{ api_database_name }}
+      CISCO_PRIME_IS_DESABLE: "{{ cisco_prime_is_desable }}"
       CISCO_PRIME_BASE_URL: {{ cisco_prime_base_url }}
       CISCO_PRIME_USER: {{ cisco_prime_user }}
       CISCO_PRIME_PASSWORD: {{ cisco_prime_password }} 
