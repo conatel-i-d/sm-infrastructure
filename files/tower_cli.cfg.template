@@ -1,7 +1,7 @@
 # User options (set with `tower-cli config`; stored in ~/.tower_cli.cfg).
 host: http://awxweb:8052
-username: awx
-password: awxpassword
+username: {{ awx_admin_username }}
+password: {{ awx_admin_password }}
 verify_ssl: False
 
 # Defaults.

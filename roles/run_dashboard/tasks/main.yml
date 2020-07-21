@@ -7,14 +7,14 @@
     - docker-compose.yml
   register: compose_config
 
-# This image is build for development
+
 - name: Build the development dashboard image
   docker_image:
     build:
       path: '{{ dashboard_folder }}'
       pull: no
       dockerfile: 'Dockerfile.dev'
-    name: '{{ project_name }}-dashboard-dev:{{ version }}'
+    name: 'conatelid/{{ project_name }}-dashboard-dev:{{ version }}'
     source: build
     push: no
   when: env == 'dev'

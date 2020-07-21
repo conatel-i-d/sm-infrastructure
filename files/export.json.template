@@ -1,0 +1,642 @@
+[
+  {
+    "asset_type": "user",
+    "username": "awx",
+    "first_name": "",
+    "last_name": "",
+    "email": "root@localhost",
+    "is_superuser": true,
+    "last_login": "2020-04-08T23:20:52.737144Z"
+  },
+  {
+    "asset_type": "organization",
+    "name": "Default",
+    "asset_relation": {
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Project Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Inventory Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Credential Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Workflow Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Notification Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Job Template Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Auditor",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Member",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Approve",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "credential",
+    "name": "Demo Credential",
+    "credential_type": "Machine",
+    "inputs": {
+      "username": "awx"
+    },
+    "asset_relation": {
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "inventory_script",
+    "name": "swtches_inv",
+    "script": "#!/usr/bin/env python\n\nimport os\nimport sys\nimport argparse\nfrom ansible.module_utils import urls\ntry:\n    import json\nexcept ImportError:\n    import simplejson as json\n\nclass ExampleInventory(object):\n\n    def __init__(self):\n        self.inventory = {}\n        self.read_cli_args()\n\n        # Called with `--list`.\n        if self.args.list:\n            self.inventory = self.example_inventory()\n        # Called with `--host [hostname]`.\n        elif self.args.host:\n            # Not implemented, since we return _meta info `--list`.\n            self.inventory = self.empty_inventory()\n        # If no groups or vars are present, return empty inventory.\n        else:\n            self.inventory = self.empty_inventory()\n\n        print json.dumps(self.inventory);\n\n    # Example inventory for testing.\n    def example_inventory(self):\n        res = urls.open_url(\"http://api/api/switch/inventory\")\n        res_data = json.loads(res.read())\n        sw_inv = res_data[\"item\"]\n        return sw_inv\n\n    # Empty inventory for testing.\n    def empty_inventory(self):\n        return {'_meta': {'hostvars': {}}}\n\n    # Read the command line args passed to the script.\n    def read_cli_args(self):\n        parser = argparse.ArgumentParser()\n        parser.add_argument('--list', action = 'store_true')\n        parser.add_argument('--host', action = 'store')\n        self.args = parser.parse_args()\n\n# Get the inventory.\nExampleInventory()",
+    "organization": "Default"
+  },
+  {
+    "asset_type": "project",
+    "name": "Demo Project",
+    "scm_type": "git",
+    "scm_url": "https://github.com/ansible/ansible-tower-samples",
+    "organization": "Default",
+    "scm_update_on_launch": true,
+    "asset_relation": {
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "project",
+    "name": "sm-playbooks",
+    "description": "Repositorio de playbooks para la gestion de switches",
+    "local_path": "sm-playbooks",
+    "organization": "Default",
+    "asset_relation": {
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "inventory",
+    "name": "Demo Inventory",
+    "organization": "Default",
+    "asset_relation": {
+      "host": [
+        {
+          "name": "localhost",
+          "variables": "ansible_connection: local\nansible_python_interpreter: {{ ansible_playbook_python }}"
+        },
+        {
+          "name": "sw-private",
+          "description": "Switch conectado al wifi de HostedPBX",
+          "variables": "---\nansible_host: {{ sw_private_ip }}\nansible_network_os: {{ sw_private_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_private_ssh_port }}\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}"
+        },
+        {
+          "name": "sw-public",
+          "description": "Switch p\u00fablicado en Internet para hacer pruebas",
+          "variables": "---\nansible_host: {{ sw_public_ip }}\nansible_network_os: {{ sw_public_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_public_ssh_port }}\nansible_user: {{ sw_public_ssh_user }}\nansible_ssh_pass: {{ sw_public_ssh_pass }}"
+        }
+      ],
+      "group": [],
+      "inventory_source": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Ad Hoc",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "inventory",
+    "name": "{{ env }}-switches",
+    "description": "Lista de switches de prueba",
+    "organization": "Default",
+    "variables": "---\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}\nansible_connection: network_cli",
+    "asset_relation": {
+      "host": [
+        {
+          "name": "sw-private",
+          "description": "Switch conectado al wifi de HostedPBX",
+          "variables": "---\nansible_host: {{ sw_private_ip }}\nansible_network_os: {{ sw_private_os }}\nansible_become: True\nansible_become_method: enable\nansible_connection: network_cli\nansible_port: {{ sw_private_ssh_port }}\nansible_user: {{ sw_private_ssh_user }}\nansible_ssh_pass: {{ sw_private_ssh_pass }}"
+        }
+      ],
+      "group": [],
+      "inventory_source": [
+        {
+          "name": "listar_swithces",
+          "source": "custom",
+          "source_script": "swtches_inv",
+          "verbosity": 2,
+          "update_on_launch": true,
+          "update_cache_timeout": 300,
+          "schedules": []
+        }
+      ],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Update",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Ad Hoc",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Use",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "Demo Job Template",
+    "inventory": "Demo Inventory",
+    "project": "Demo Project",
+    "playbook": "hello_world.yml",
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [
+        "Demo Credential"
+      ],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-debug",
+    "description": "Playbook de prueba para verificar el funcionamiento de los roles",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "debug.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-reset-interface",
+    "description": "Reinicia la interfaz de un switch",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "reset-interface.yml",
+    "ask_limit_on_launch": true,
+    "survey_enabled": true,
+    "become_enabled": true,
+    "allow_simultaneous": true,
+    "asset_relation": {
+      "survey_spec": {
+        "name": "",
+        "description": "",
+        "spec": [
+          {
+            "question_name": "Interface",
+            "question_description": "Nombre de la interface a reiniciar",
+            "required": true,
+            "type": "text",
+            "variable": "interface_name",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": ""
+          }
+        ]
+      },
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-interfaces",
+    "description": "Muestra las interfaces de cada switch",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-interfaces.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "allow_simultaneous": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-interfaces-information",
+    "description": "Muestra informaci\u00f3n m\u00e1s rica de una interface",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-interfaces-information.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "allow_simultaneous": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-interfaces-switchport",
+    "description": "Muestra la configuraci\u00f3n switchport de cada interfaz",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-interfaces-switchport.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "allow_simultaneous": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-mac-address-table",
+    "description": "Obtiene la",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-mac-address-table.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "allow_simultaneous": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-version",
+    "description": "Obtiene la versi\u00f3n del switch",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-version.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  },
+  {
+    "asset_type": "job_template",
+    "name": "{{ env }}-show-vlan",
+    "description": "Muestra la informaci\u00f3n de las VLANs del switch",
+    "inventory": "{{ env }}-switches",
+    "project": "sm-playbooks",
+    "playbook": "show-vlan.yml",
+    "ask_limit_on_launch": true,
+    "become_enabled": true,
+    "asset_relation": {
+      "survey_spec": {},
+      "notification_templates_error": [],
+      "notification_templates_success": [],
+      "schedules": [],
+      "labels": [],
+      "credentials": [],
+      "roles": [
+        {
+          "name": "Admin",
+          "user": [
+            "awx"
+          ],
+          "team": []
+        },
+        {
+          "name": "Execute",
+          "user": [],
+          "team": []
+        },
+        {
+          "name": "Read",
+          "user": [],
+          "team": []
+        }
+      ]
+    }
+  }
+]

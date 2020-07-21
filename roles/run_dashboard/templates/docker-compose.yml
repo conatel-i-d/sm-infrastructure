@@ -2,7 +2,7 @@ version: '3'
 services:
   dashboard:
 {% if env == 'dev' %}
-    image: {{ project_name }}-dashboard-dev:{{ version }}
+    image: conatelid/{{ project_name }}-dashboard-dev:{{ version }}
 {% else %}
     image: conatelid/{{ project_name }}-dashboard-prod:{{ version }}
 {% endif %}

@@ -13,18 +13,15 @@
     - docker-compose.yml
   register: compose_config
   
-- debug:
-    msg: '{{ docker_compose_dir }}/postgres'
+# - name: Start the containers
+#   docker_compose:
+#     project_src: '{{ docker_compose_dir }}/postgres'
+#     restarted: '{{ compose_config is changed }}'
+#     state: '{{ state }}'
+#     remove_volumes: yes 
 
-- name: Start the containers
-  docker_compose:
-    project_src: '{{ docker_compose_dir }}/postgres'
-    restarted: '{{ compose_config is changed }}'
-    state: '{{ state }}'
-    remove_volumes: yes 
-    
-- name: Delete postgres docker-compose.yml if state is absent
-  file:
-    state: absent
-    path: '{{ docker_compose_dir }}/postgres'
-  when: 'state == "absent"'
+# - name: Delete postgres docker-compose.yml if state is absent
+#   file:
+#     state: absent
+#     path: '{{ docker_compose_dir }}/postgres'
+#   when: 'state == "absent"'

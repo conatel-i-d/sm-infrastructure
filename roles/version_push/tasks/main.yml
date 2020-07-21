@@ -3,8 +3,8 @@
 
 - name: Log into DockerHub
   docker_login:
-    username: conatelid #'{{ dockerhub_user }}'
-    password: C0n4t3lC0n4t3l #'{{ dockerhub_password }}'
+    username: '{{ dockerhub_user }}'
+    password: '{{ dockerhub_password }}'
 
 - name: Build images with version
   docker_image:

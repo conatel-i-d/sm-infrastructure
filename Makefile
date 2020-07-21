@@ -20,10 +20,11 @@ down:
 
 db_up:
 	ansible-playbook db.yml --extra-vars "state=present"
+	cd lib/docker/postgres && docker-compose up -d --force-recreate && cd -
 
 _db_down:
-	ansible-playbook db.yml --extra-vars "state=absent"
-
+	docker stop postgres && docker rm postgres && docker volume rm postgres_postgres-volume
+	rm -rf lib/docker/postgres
 setup:
 	ansible-playbook setup_project.yml --extra-vars "state=present"
 
@@ -59,10 +60,34 @@ awx-receive:
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli receive --all
 
-awx-send:
+awx-send-dev:
+	ansible-playbook update_tower_config.yml --extra-vars "env=dev"
 	docker run --network sm_network \
 		-v $$(pwd)/files/export.json:/root/export.json \
 		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
 		-t cdh/tower-cli send /root/export.json
 
-.PHONY: secret inventory up down local version_minor version_mayor version_patch db_up db_down setup tear_down version_push prod
+awx-send-prod:
+	ansible-playbook update_tower_config.yml --extra-vars "env=prod"
+	docker run --network sm_network \
+		-v $$(pwd)/files/export.json:/root/export.json \
+		-v $$(pwd)/files/tower_cli.cfg:/root/.tower_cli.cfg \
+		-t cdh/tower-cli send /root/export.json
+
+update_certs:
+	cd lib/docker/proxy && docker-compose up -d --force-recreate && cd -
+
+update_keycloak_credentials:
+	cd lib/docker/keycloak && docker-compose up -d --force-recreate && cd -
+
+update_prime_credentials:
+	cd lib/docker/api && docker-compose up -d --force-recreate && cd -
+
+update_switches_credentials:
+	cd lib/docker/api && docker-compose up -d --force-recreate && cd -
+
+update_ldap_credentials:
+	echo "update"
+
+.PHONY: secret inventory up down local version_minor version_mayor version_patch db_up _db_down setup tear_down version_push prod
+

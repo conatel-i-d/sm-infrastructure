@@ -8,7 +8,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./proxy.conf:/etc/nginx/proxy.conf:ro
       - ./favicon.ico:/etc/nginx/favicon.ico
-      - {{ certificates_folder }}/{{ public_domain }}.fullchain.crt:/etc/nginx/{{ public_domain }}.crt
+      - {{ certificates_folder }}/{{ public_domain }}.crt:/etc/nginx/{{ public_domain }}.crt
       - {{ certificates_folder }}/{{ public_domain }}.key:/etc/nginx/{{ public_domain }}.key
     ports:
 {% if env == 'dev' %}
