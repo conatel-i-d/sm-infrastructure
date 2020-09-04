@@ -37,6 +37,11 @@ dev:
 prod:
 	ansible-playbook local.yaml --extra-vars "env=prod"
 
+update_api_prod_creds:
+	ansible-playbook api_run.yaml --extra-vars "env=prod"
+	cd ./lib/docker/api && docker-compose up -d --force-recreate && cd -
+
+
 version_minor:
 	ansible-playbook versioning.yml --tags "new" --extra-vars "bump=minor"
 
@@ -151,15 +156,6 @@ awx-send-prod:
 
 update_certs:
 	cd lib/docker/proxy && docker-compose up -d --force-recreate && cd -
-
-update_prime_credentials:
-	cd lib/docker/api && docker-compose up -d --force-recreate && cd -
-
-update_switches_credentials:
-	cd lib/docker/api && docker-compose up -d --force-recreate && cd -
-
-update_ldap_credentials:
-	echo "update"
 
 .PHONY: secret inventory up down local version_minor version_mayor version_patch db_up _db_down setup tear_down version_push prod
 
